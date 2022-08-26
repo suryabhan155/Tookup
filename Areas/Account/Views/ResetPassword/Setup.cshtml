@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "Setup";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title> Install My Sample App</title>
+    <style>
+        a:link {
+            text-decoration: none;
+        }
+
+        a:visited {
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        a:active {
+            text-decoration: underline;
+        }
+        .lin1 {
+            background: lavender;
+            padding: 6px;
+            margin: 1px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    @*<a href="~\App_Data\setup.exe"> Install Tookup App</a>*@
+    <h3>Install  Tookup App</h3>
+    <div class="mylink col-lg-10 col-md-10 col-sm-10 col-xl-10">
+        <div class="lin1 col-lg-2 col-md-2 col-sm-2 col-2">
+            <a href="~/App_Data/x64/setup.exe">x64 Windows</a>
+        </div>
+        <div class="lin1 col-lg-2 col-md-2 col-sm-2 col-2">
+            <a href="~/App_Data/x86/setup.exe">x86 Windows</a>
+        </div>
+    </div>
+    
+    @*<a href="ms-appinstaller:?source=~/App_Data/TookupMSIX_1.0.0.0_x64.cer"> Certificate</a>*@
+</body>
+</html>

@@ -1,0 +1,220 @@
+﻿@using BOL.ViewModels
+@{
+    ViewBag.Title = "Reset Password";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
+    ResetPass o1 = new ResetPass();
+}
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Reset Password Form</title>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/resetpasswordstyle.css" rel="stylesheet" />
+    <!-- Custom Theme files -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Reset Password Form Responsive, Login form web template, Sign up Web Templates, Flat Web Templates, Login signup Responsive web template, Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+    <!--google fonts-->
+    <link href='//fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900' rel='stylesheet' type='text/css'>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="elelment">
+        <h2>Reset Password Form</h2>
+        <div class="element-main" id="mainform">
+            <h1>Forgot Password</h1>
+            <p> Enter email to reset your password.</p>
+            @using (Html.BeginForm("Index", "ResetPassword", new { area = "Account" }, FormMethod.Post, new { @id = "myform", @class = "form-horizontal" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary("", new { @class = "error" })
+                <div class="form-group">
+                    <div>
+                        @Html.TextBox("Email", null, new { @class = "form-control", @placeholder = "Your e-mail address", @id = "Email" })
+                    </div>
+                    <label id="emailnotexist" class="error text-center"></label>
+                    <small id="feedback" class="error text-center"></small>
+                </div>
+                <div class="form-group form-actions">
+                    <div>
+                        <input type="button" name="btnsubmit" id="btnsubmit" class="btn btn-default" value="Reset my Password" />
+                    </div>
+                </div>
+            }
+
+
+        </div>
+        @*<div id="success-msg" class="hideme" style="display: block;">*@
+            <div class="sub1 success-msg">
+                @*<p class="desc">
+                    We sent a reset password email to <strong class="email"> @ViewBag.Email </strong>. Please click the reset password link to set your new password.
+                </p>
+                <p class="desc">
+                    Didn't receive the email yet?<br>
+                    Please check your spam folder, or <a href="@Url.Action("Index", null, new { area = "Account", controller = "ResetPassword" }, Request.Url.Scheme)"><span>try again</span></a>.<input type="hidden" class="result">
+                </p>*@
+            </div>
+        @*</div>*@
+    </div>
+</body>
+</html>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("input:text,form").attr("autocomplete", "off");
+                        })
+    $(document).ready(function ()
+    {
+        $('#emailnotexist').hide();
+        $('#feedback').hide();
+        $('.hideme').hide();
+                        })
+    $(function () {
+        var mob = $('#Email').val();
+        $('#Email').keyup(function () {
+                $('#feedback').show();
+                            //validate email
+                            var elem = $("#Email")[0],
+                    emailInput = $("#Email").val(),
+                    emailParts = emailInput.split('@Html.Raw(HttpUtility.JavaScriptStringEncode("@"))'),
+                    text = 'Enter a valid e-mail address!';
+                            if ($("#Email").val().length == 0) {
+                    $('#feedback').hide();
+                    $('#btnsubmit').attr("disabled", false);
+                            }
+                else {
+                @*//at least one @, catches error*@
+                    if (emailParts[1] == null || emailParts[1] == "" || emailParts[1] == undefined) {
+                        $('#feedback').text(text);
+                        $('#btnsubmit').attr("disabled", true);
+                    } else {
+
+                        //split domain, subdomain and tld if existent
+                        var emailDomainParts = emailParts[1].split('.');
+                        //at least one . (dot), catches error
+                        if (emailDomainParts[1] == null || emailDomainParts[1] == "" || emailDomainParts[1] == undefined) {
+                            $('#feedback').text(text);
+                            $('#btnsubmit').attr("disabled", true);
+                        } else {
+                            //more than 2 . (dots) in emailParts[1]
+                            if (!emailDomainParts[3] == null || !emailDomainParts[3] == "" || !emailDomainParts[3] == undefined) {
+                                $('#feedback').text(text);
+                                $('#btnsubmit').attr("disabled", true);
+                            } else {
+                                //email user
+                                if (/[^a-z0-9!#$%&'*+-/=?^_`{|}~]/i.test(emailParts[0])) {
+                                    $('#feedback').text(text);
+                                    $('#btnsubmit').attr("disabled", true);
+                                } else {
+                                @*//double @*@
+                                    if (!emailParts[2] == null || !emailParts[2] == "" || !emailParts[2] == undefined) {
+                                        $('#feedback').text(text);
+                                        $('#btnsubmit').attr("disabled", true);
+                                    } else {
+                                        //domain
+                                        if (/[^a-z0-9-]/i.test(emailDomainParts[0])) {
+                                            $('#feedback').text(text);
+                                            $('#btnsubmit').attr("disabled", true);
+                                        } else {
+                                            //check for subdomain
+                                            if (emailDomainParts[2] == null || emailDomainParts[2] == "" || emailDomainParts[2] == undefined) {
+                                                //TLD
+                                                if (/[^a-z]/i.test(emailDomainParts[1])) {
+                                                    $('#feedback').text(text);
+                                                    $('#btnsubmit').attr("disabled", true);
+                                                } else {
+                                                    $('#feedback').text('valid email');
+                                                    $('#feedback').hide();
+                                                    $('#btnsubmit').attr("disabled", false);
+                                                }
+                                            } else {
+                                                //subdomain
+                                                if (/[^a-z0-9-]/i.test(emailDomainParts[1])) {
+                                                    $('#feedback').text(text);
+                                                    $('#btnsubmit').attr("disabled", true);
+                                                } else {
+                                                    //TLD
+                                                    if (/[^a-z]/i.test(emailDomainParts[2])) {
+                                                        $('#feedback').text(text);
+                                                        $('#btnsubmit').attr("disabled", true);
+                                                    } else {
+                                                        $('#feedback').text('valid email');
+                                                        $('#feedback').hide();
+                                                        $('#btnsubmit').attr("disabled", false);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    //validation for forms
+    $(document).ready(function () {
+        $('#myform').validate({
+            rules: {
+                Email: {
+                    required: true
+                }
+            },
+            messages: {
+                Email: 'Please enter the email.'
+            }
+        });
+         // here we click the submit button to save the form
+        $('#btnsubmit').click(function () {
+            $("#myform").valid();
+            if ($("#myform").valid() == true) {
+                $('#btnsubmit').attr("disabled", true);
+
+                var form = new FormData($("#myform")[0]);
+
+                    $.ajax({
+                        url: '/ResetPassword/Index',
+                        method: "POST",
+                        dataType: 'json',
+                        data: form,
+                        processData: false,
+                        contentType: false,
+                        success: function (result) {
+                            if (result != null) {
+                                //$('.hideme').show();
+                                $('.sub1').append('<p class="desc">We sent a reset password email to <strong class="email">'+result+'</strong>. Please click the reset password link to set your new password</p><p class= "desc">.Did not receive the email yet?<br>Please check your spam folder, or <a href="@Url.Action("Index", null, new { area = "Account", controller = "ResetPassword" }, Request.Url.Scheme)"><span>try again</span></a>.<input type="hidden" class="result"></p></div>');
+
+                                @*// $('#emailname').text(@ViewBag.Email);*@
+                                
+                                $('#mainform').hide();
+                            }
+                            else if (result== "2") {
+                                $('#emailnotexist').show();
+                                $('#emailnotexist').text("This email id does not exists. please sign up.");
+                            }
+                        },
+                        error: function (result) {
+                            $('#emailnotexist').show();
+                            $('#emailnotexist').text("This email id does not exists. please sign up.");
+                        }
+                    });
+                }
+            else {
+                $("#myform").valid();
+            }
+        });
+    });
+</script>
+
